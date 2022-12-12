@@ -4,6 +4,18 @@ const app = express();
 const SearchResult = require('./models/searchResult');
 const { v4: uuidv4 } = require('uuid');
 var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/translateApplication');
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", () => {
+    console.log("Database connected");
+});
+
+app.listen(80,() => {
+	console.log("server starting on port : 80 ")
+});
+
 // Example : http://localhost/translate?text=Hello&from=en&to=ko
 app.get('/translate', (req, res) => {
     const text = req.query.text;
@@ -53,6 +65,3 @@ app.get('/translate', (req, res) => {
     
 });
 
-app.listen(80,() => {
-	console.log("server starting on port : 80 ")
-});
